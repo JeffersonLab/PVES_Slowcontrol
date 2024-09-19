@@ -1,0 +1,15 @@
+crate_number 3 wait_time 20
+min 5 max 50 np 10
+PITA_step 500 PITA_num 2
+ 
+
+-- help --
+# crate_number
+   0          -- Counting House
+   3          -- Injector
+# Wait_time   -- Time that waits between changing the set point (in seconds)
+# min         -- beginning value of set point 
+# max         -- maximum value of set point
+# step        -- increasing step value of set point 
+# PITA_step   -- step size for PITA SCAN
+# PITA_num    -- maximum number of steps(forward and backword) you need for the PITA SCAN

@@ -1,0 +1,15 @@
+crate_number 3 wait_time 120
+step_size 500 max_step 2
+beam_current 70
+
+-- help --
+# crate_number
+   0                -- Counting House
+   3                -- Injector
+# Wait_time         -- Time that waits between changing the set point (in seconds)
+# step_size         -- step size for APOSV SCAN
+# max_step          -- maximum number of steps(forward and backword) you need for the APOSV SCAN
+# beam_current      -- current of the beam in the unit of uA
+# example           -- PITA_step = 500 max_step = 2
+                    -- APOSV will go as 
+                    -- default, default+500,default-500,default+1000,default-1000

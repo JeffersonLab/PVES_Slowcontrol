@@ -1,0 +1,15 @@
+crate_number 3 wait_time 30
+step_size 500 max_step 2
+beam_current 70
+
+-- help --
+# crate_number
+   0                -- Counting House
+   3                -- Injector
+# Wait_time         -- Time that waits between changing the set point (in seconds)
+# step_size         -- step size for PITA SCAN
+# max_step          -- maximum number of steps(forward and backword) you need for the PITA SCAN
+# beam_current      -- current of the beam in the unit of uA
+# example           -- PITA_step = 100 max_step = 3
+                    -- PITA1 and PITA2 will go as 
+                    -- delta(371), 371+100,371-100,371+200,371-200,371+300,371-300

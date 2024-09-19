@@ -1,0 +1,16 @@
+crate_number 3 wait_time 30
+min 1 max 4000 np 17
+beam_current 50
+
+-- help --
+# crate_number
+   0            -- Counting House
+   3            -- Injector
+# Wait_time     -- Time that waits between changing the set point (in seconds)
+# min           -- beginning value of set point in counts (>=1)
+# max           -- maximum value of set point in counts (<=8000)
+# np            -- number of set points including minimum and maximum
+# beam_current  -- current of the beam in the unit of uA
+# example       -- min 1 max 4000 np 17
+                -- RHWP will be set to
+                -- 1, 250, 500, 750, 1000, 1250, 1500, 1750, 2000, 2250, 2500, 2750, 3000, 3250, 3500, 3750, 4000

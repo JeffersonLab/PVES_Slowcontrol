@@ -1,0 +1,172 @@
+#!/usr/bin/env python3
+
+# SCAN script
+
+# Please modify the "parameters.txt" file for the parameters as you need
+# In the terminal, type in "chmod +x scan.py" 
+# Then execute with "./scan.py"
+
+import sys
+import tkinter as tk
+import time
+import utils as u
+import subprocess
+from ctypes import cdll
+
+#Channel_name = 'psub_pl_ipos'
+PITA1 = 'C1068_QDAC01'  # RTPPITA1CNTSET
+PITA2 = 'C1068_QDAC02'  # RTPPITA2CNTSET
+COMMAND_SCAN = 5000
+# Command: 
+# SCAN_GET_DATA, SCAN_SET_DATA, SCAN_GET_STATUS, SCAN_SET_STATUS
+command = [1001,1002,1003,1004]
+# wait_time = 5 # seconds
+
+i = 0
+f = open('parameters.txt','r')
+err = open('error.txt','w+')
+err.write('====== error ======\n')
+log = open('log.txt','w+')
+for line in f.readlines():
+  if i == 0:
+    A = line.rstrip().split(" ")
+    if A[1] == "0" or A[1] == "3":
+      crate = int(A[1])
+    else:
+      err.write('Wrong Crate Number!!\n')
+      sys.exit()
+  elif i == 1:
+    B = line.split(" ")
+    if int(B[1]) >= 0 and int(B[3]) >= 0 and int(B[5]) >= 0:
+      sp = int(B[5])
+      xmin = int(B[1])
+      if int(B[1]) <= int(B[3]):
+        xmax = int(B[3])
+      else:
+        err.write("Data point MUS2564T be larger than the starting point!!\n")
+        sys.exit()
+    else:
+      err.write('Data point MUST be non-negative!!\n')
+      sys.exit()
+  elif i == 2:
+    B = line.split(" ")
+    if int(B[1]) > 0:
+      wait_time = B[1]
+    else:
+      err.write("Wait_time MUST be positive!!\n")
+      sys.exit()
+  elif i == 3:
+    B = line.split(" ")
+    if int(B[1]) > 0:
+      wait_time = B[1]
+    else:
+      err.write("Wait_time MUST be positive!!\n")
+      sys.exit()
+  else:
+    break
+  i += 1
+
+f.close()
+
+np = (xmax - xmin)/sp + 1.0
+
+# caget to get the EPICS original value from ''
+xorg = subprocess.Popen(['caget', '-t', Channel_name], stdout=subprocess.PIPE).stdout.read().strip().decode('ascii')
+
+unclean_packet = [COMMAND_SCAN, command[3],0,0,0,"SCN Status Change","Y"]
+clean_packet = [COMMAND_SCAN, command[3],1,0,0,"SCN Status Change","Y"]
+
+# get the origin scandata1 from socket
+packet = [COMMAND_SCAN, command[0],1,0,0,"Check SCN Data Value","Y"]
+err_flag, reply = u.send_command(crate, packet)
+if err_flag == u.SOCK_OK:
+  orig = int(reply[3])
+  log.write('The original set point is ' + str(orig) + ' \n')
+else:
+  err.write('Could not access socket.\n')
+  sys.exit()
+
+for i in range(0,int(np)):
+  # set not clean
+  err_flag, reply = u.send_command(crate, unclean_packet)
+  if err_flag == u.SOCK_OK:
+    log.write('SCAN status changed to NOT CLEAN\n')
+  else:
+    err.write('Could not access socket.\n')
+    sys.exit()
+  # set scandata1 in socket
+  value = xmin + i*sp
+  packet = [COMMAND_SCAN, command[1],1,value,0,"Set SCN Data Value","Y"]
+  err_flag, reply = u.send_command(crate, packet)
+  if err_flag == u.SOCK_OK:
+    log.write('Wrote new SCAN set point ' + str(value) + ' to scandata1\n')
+  else:
+    err.write('Could not access socket.\n')
+    sys.exit()
+  log.write('\n' + reply + '\n')
+
+  # set scandata1 in EPICS
+  feedback = subprocess.Popen(['caput',Channel_name,str(int(xorg)+i)], stdout=subprocess.PIPE).stdout.read().strip().decode('ascii')
+  C = feedback.rstrip().split(" ")
+  if C[0] == 'Old':
+    log.write('Wrote new SCAN set point ' + str(value) + ' to EPICS variable ' + Channel_name + '\n')
+    log.write(feedback + '\n')
+  else:
+    err.write(feedback + '\n')
+    sys.exit()
+
+  # set clean
+  err_flag, reply = u.send_command(crate, clean_packet)
+  log.write(reply)
+  if err_flag == u.SOCK_OK:  # caput value
+    log.write('SCAN status changed to CLEAN\n')
+  else:
+    err.write('Could not access socket.\n')
+    sys.exit()
+  time.sleep(wait_time)
+  log.write('waited for ' + str(wait_time/60) + 'minutes\n')
+
+# set not clean
+err_flag, reply = u.send_command(crate, unclean_packet)
+if err_flag == u.SOCK_OK:  # caput value
+  log.write('SCAN status changed to NOT CLEAN\n')
+else:
+  err.write('Could not access socket.\n')
+  sys.exit()
+
+# put the original scandata1 back
+packet = [COMMAND_SCAN, command[1],1,orig,0,"Set SCN Data Value","Y"]
+err_flag, reply = u.send_command(crate, packet)
+if err_flag == u.SOCK_OK:
+  log.write('Wrote SCAN set point back to origin value ' + str(value) + ' to scandata1\n')
+else:
+  err.write('Could not access socket.\n')
+  sys.exit()
+log.write('\n' + reply + '\n')
+
+# set clean
+err_flag, reply = u.send_command(crate, clean_packet)
+log.write(reply)
+if err_flag == u.SOCK_OK:
+  log.write('SCAN status changed to CLEAN\n')
+else:
+  err.write('Could not access socket.\n')
+  sys.exit()
+
+
+
+# set EPICS variable back to origin
+feedback = subprocess.Popen(['caput',Channel_name,xorg], stdout=subprocess.PIPE).stdout.read().strip().decode('ascii')
+C = feedback.rstrip().split(" ")
+if C[0] == 'Old':
+  log.write('Wrote original SCAN set point ' + xorg + ' back to EPICS variable ' + Channel_name + '\n')
+  log.write(feedback + '\n')
+else:
+  err.write(feedback + '\n')
+  eys.exit()
+
+log.close()
+err.close()
+  
+print('SCAN finished')
+

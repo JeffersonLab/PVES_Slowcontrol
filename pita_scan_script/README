@@ -1,0 +1,35 @@
+Before running the script, first need to change the parameters_PITA.txt/parameters_CIA.txt/parameters_RHWP.txt files to specify the parameters you need
+Then in a terminal, type in "chmod +x scan.py"
+After previous command, use "./scan.py +'command_type'" 
+'command_type' can be 'pita' or 'PITA' or 'rhwp' or 'RHWP' or 'cia' or 'CIA'
+Example:
+./scan.py pita
+./scan.py rhwp
+./scan.py cia
+
+The script will do the follows:
+read the origin EPICS read variable and origin scandata1 values
+set cleandata to NOT CLEAN(0) 
+set the scandata1 value through socket
+set cleandata to CLEAN(1)
+wait
+set cleandata to NOT CLEAN(0)
+set EPICS variable to the expected value1
+check if the set value is updated(only do when PITA SCAN is used)
+set APPLY TO CELL variable to 1(click the button) this only do when PITA SCAN is used
+check the readback value of EPICS variable
+set the scandata1 value1 through socket
+set cleandata to CLEAN(1)
+wait
+repeat as next values
+After setting all the set points
+set cleandata to NOT CLEAN(0)
+return back the values to EPICS variable and scandata1(through socket)
+set cleandata to CLEAN(1)
+finish
+
+scan.py script is calling both scan_para.py and utils.py scripts and reads the parameters_RHWP.txt/parameters_PITA.txt/parameters_CIA.txt file according to the command_type that is used, also there are instructions for the specific parameters inside the txt file.
+The utils.py script requires 'cfSockCli.c' and 'cfSockCli.h' in the same directory and also 'libcfSockCli.so' file to be put in a separate directory './cfSock/'.
+
+When the script is finished, there will be a 'SCAN finished' show in the terminal at the end, if the script is aborted mid-process, check the error.txt log
+Also, when finished, you can check the log.txt log to see what have been done.

@@ -1,0 +1,15 @@
+crate_number 3 wait_time 120
+step_size 10000 max_step 2
+beam_current 70
+
+-- help --
+# crate_number
+   0              -- Counting House
+   3              -- Injector
+# Wait_time       -- Time that waits between changing the set point (in seconds)
+# step_size       -- step size for CIA SCAN
+# max_step        -- maximum number of steps(forward and backword) you need for the CIA SCAN
+# beam_current    -- current of the beam in the unit of uA
+# example         -- CIA_step = 1000 max_step = 3
+                  -- CIA1,2,3,4(dac11,dac12,dac13,dac14) will be set as 
+                  -- default, default+1000,default-1000,default+2000,default-2000,default+3000,default-3000

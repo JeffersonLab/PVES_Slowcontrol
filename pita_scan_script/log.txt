@@ -1,0 +1,85 @@
+The set point value of scandata1 is 0 
+The original value of PITA1 is -90.0134
+The original value of PITA2 is -90.0134
+SCAN status changed to NOT CLEAN(0)
+Wrote new SCAN set point -90 to scandata1
+SCAN status changed to CLEAN(1)
+Lost the beam 1 time/times
+waited for 30 seconds
+
+SCAN status changed to NOT CLEAN(0)
+Old : RTPPITA1CNTSET                 -100 
+New : RTPPITA1CNTSET                 410
+Wrote SCAN set point 410 to EPICS variable RTPPITA1CNTSET
+Old : RTPPITA2CNTSET                 -100 
+New : RTPPITA2CNTSET                 410
+Wrote SCAN set point 410 to EPICS variable RTPPITA2CNTSET
+Old : RTPDACSETCMD                   0 
+New : RTPDACSETCMD                   0
+Wrote SCAN set point 1 to EPICS variable RTPDACSETCMD
+Wrote new SCAN set point 410 to scandata1
+SCAN status changed to CLEAN(1)
+No beam lost.
+waited for 30 seconds
+
+SCAN status changed to NOT CLEAN(0)
+Old : RTPPITA1CNTSET                 410 
+New : RTPPITA1CNTSET                 -590
+Wrote SCAN set point -590 to EPICS variable RTPPITA1CNTSET
+Old : RTPPITA2CNTSET                 410 
+New : RTPPITA2CNTSET                 -590
+Wrote SCAN set point -590 to EPICS variable RTPPITA2CNTSET
+Old : RTPDACSETCMD                   0 
+New : RTPDACSETCMD                   0
+Wrote SCAN set point 1 to EPICS variable RTPDACSETCMD
+Wrote new SCAN set point -590 to scandata1
+SCAN status changed to CLEAN(1)
+No beam lost.
+waited for 30 seconds
+
+SCAN status changed to NOT CLEAN(0)
+Old : RTPPITA1CNTSET                 -590 
+New : RTPPITA1CNTSET                 910
+Wrote SCAN set point 910 to EPICS variable RTPPITA1CNTSET
+Old : RTPPITA2CNTSET                 -590 
+New : RTPPITA2CNTSET                 910
+Wrote SCAN set point 910 to EPICS variable RTPPITA2CNTSET
+Old : RTPDACSETCMD                   0 
+New : RTPDACSETCMD                   0
+Wrote SCAN set point 1 to EPICS variable RTPDACSETCMD
+Wrote new SCAN set point 910 to scandata1
+SCAN status changed to CLEAN(1)
+SCAN status changed to NOT CLEAN(0)
+SCAN status changed to CLEAN(1)
+Lost the beam 1 time/times
+waited for 30 seconds
+
+SCAN status changed to NOT CLEAN(0)
+Old : RTPPITA1CNTSET                 910 
+New : RTPPITA1CNTSET                 -1090
+Wrote SCAN set point -1090 to EPICS variable RTPPITA1CNTSET
+Old : RTPPITA2CNTSET                 910 
+New : RTPPITA2CNTSET                 -1090
+Wrote SCAN set point -1090 to EPICS variable RTPPITA2CNTSET
+Old : RTPDACSETCMD                   0 
+New : RTPDACSETCMD                   0
+Wrote SCAN set point 1 to EPICS variable RTPDACSETCMD
+Wrote new SCAN set point -1090 to scandata1
+SCAN status changed to CLEAN(1)
+No beam lost.
+waited for 30 seconds
+
+SCAN status changed to NOT CLEAN(0)
+Old : RTPPITA1CNTSET                 -1090 
+New : RTPPITA1CNTSET                 -90.0134
+Wrote SCAN set point -90.0134 to EPICS variable RTPPITA1CNTSET
+Old : RTPPITA2CNTSET                 -1090 
+New : RTPPITA2CNTSET                 -90.0134
+Wrote SCAN set point -90.0134 to EPICS variable RTPPITA2CNTSET
+Old : RTPDACSETCMD                   0 
+New : RTPDACSETCMD                   0
+Wrote SCAN set point 1 to EPICS variable RTPDACSETCMD
+Wrote new SCAN set point 0 to scandata1
+
+PITA SCAN finished!
+Thanks for using the script!
